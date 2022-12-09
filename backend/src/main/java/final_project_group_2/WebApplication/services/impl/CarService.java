@@ -3,7 +3,6 @@ package final_project_group_2.WebApplication.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import final_project_group_2.WebApplication.dto.CarDTO;
 import final_project_group_2.WebApplication.models.*;
-import final_project_group_2.WebApplication.repositories.IBookingRepository;
 import final_project_group_2.WebApplication.repositories.ICarRepository;
 import final_project_group_2.WebApplication.repositories.ICharacteristicRepository;
 import final_project_group_2.WebApplication.services.ICarService;
@@ -22,9 +21,6 @@ public class CarService implements ICarService {
 
     @Autowired
     ICarRepository carRepository;
-
-    @Autowired
-    IBookingRepository bookingRepository;
 
     @Autowired
     ICharacteristicRepository characteristicService;
@@ -86,7 +82,6 @@ public class CarService implements ICarService {
     public ResponseEntity<?> findById(Integer id) {
         CarDTO foundCar = mapper.convertValue(carRepository.findById(id).get(), CarDTO.class);
         if (foundCar !=null){
-            foundCar.setBookings(bookingRepository.findByCarId(id));
             return new ResponseEntity<CarDTO>(foundCar, HttpStatus.OK);
         }else{
             return new ResponseEntity("No se encontró el auto solicitado", HttpStatus.NOT_FOUND);
