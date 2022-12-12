@@ -35,15 +35,24 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    public Set<BookingDTO> listByUserId(Integer userId){
+        Set<BookingDTO> setBookings = new HashSet<>();
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        for (Booking booking : bookings) {
+            setBookings.add(mapper.convertValue(booking, BookingDTO.class));
+        }
+        return setBookings;
+    }
+    @Override
     public ResponseEntity<?> addNewBooking(Booking newBooking) {
         if (bookingRepository.save(newBooking) != null) return new ResponseEntity<>(HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    public Set<BookingDTO> listByUserId(Integer userId){
+    public Set<BookingDTO> listByCarId(Integer carId){
         Set<BookingDTO> setBookings = new HashSet<>();
-        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        List<Booking> bookings = bookingRepository.findByCarId(carId);
         for (Booking booking : bookings) {
             setBookings.add(mapper.convertValue(booking, BookingDTO.class));
         }

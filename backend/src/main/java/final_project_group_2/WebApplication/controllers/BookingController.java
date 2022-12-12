@@ -26,6 +26,11 @@ public class BookingController {
         return bookingService.listBookings();
     }
 
+    //Devolver el listado completo de reservas por usuario
+    @GetMapping("/user/{id}")
+    public Set<BookingDTO> listBookingsByUserId(@PathVariable Integer id) {
+        return bookingService.listByUserId(id);
+    }
 
     //Agregar una reserva
     @PostMapping("/add")
@@ -47,4 +52,9 @@ public class BookingController {
     //     return bookingService.updateBooking(booking);
     // }
 
+    //Devolver el listado completo de reservas por auto
+    @GetMapping("/car/{id}")
+    public Set<BookingDTO> listBookingsByCarId(@PathVariable Integer id) {
+        return bookingService.listByCarId(id);
+    }
 }

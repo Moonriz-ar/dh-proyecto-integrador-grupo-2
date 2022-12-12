@@ -13,9 +13,15 @@ public interface IBookingService {
 
     // ResponseEntity<?> findById(Integer id);
 
+    Set<BookingDTO> listByUserId(Integer userId);
+
     ResponseEntity<?> addNewBooking(Booking booking);
 
+<<<<<<< HEAD
     Set<BookingDTO> listByUserId(Integer userId);
+=======
+    Set<BookingDTO> listByCarId(Integer carId);
+>>>>>>> f3afb314d0e37b66ace2569f035cc7458b7425e5
 
     // ResponseEntity<?> deleteBooking(Integer id);
 

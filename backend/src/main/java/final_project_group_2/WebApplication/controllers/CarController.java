@@ -10,12 +10,10 @@ import final_project_group_2.WebApplication.services.ICarService;
 import org.hibernate.annotations.common.util.impl.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +28,26 @@ public class CarController {
     @Autowired
     ICarService carService;
 
+    @GetMapping
+    public List<CarDTO> test(@RequestParam(required = false)  String category, @RequestParam(required = false) Integer city, @RequestParam(required = false) Date startDate, @RequestParam(required = false) Date endDate){
+
+
+        Specification<Car> spec = new CarSpecification();
+        if(category != null){
+            System.out.println(category);
+            spec = spec.and(new CarSpecification().carsByCategoryTitle(category));
+        }
+        if (startDate != null && endDate != null) {
+            spec = spec.and(new CarSpecification().carsByDate(startDate,endDate));
+
+        }
+        if (city != null) {
+            System.out.println(city);
+            spec = spec.and(new CarSpecification().carsByCity(city));
+
+        }
+        System.out.println(spec.toString());
+        return carService.filterCars(spec);
 
 
     @GetMapping

@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,16 +31,16 @@ public class CarService implements ICarService {
     ObjectMapper mapper;
 
 
-    @Override
-    public List<CarDTO> filterCars(Specification spec){
-        List<CarDTO> listCarsDTO = new ArrayList<>();
-        List<Car> cars = carRepository.findAll(spec);
-        if (cars.size() > 0) {
-            for (Car car : cars) {
-                listCarsDTO.add(mapper.convertValue(car, CarDTO.class));
-            }}
-        return listCarsDTO;
-    }
+    // @Override
+    // public List<CarDTO> filterCars(Specification spec){
+    //     List<CarDTO> listCarsDTO = new ArrayList<>();
+    //     List<Car> cars = carRepository.findAll(spec);
+    //     if (cars.size() > 0) {
+    //         for (Car car : cars) {
+    //             listCarsDTO.add(mapper.convertValue(car, CarDTO.class));
+    //         }}
+    //     return listCarsDTO;
+    // }
 
     @Override
     public List<CarDTO> listByCategory(String category){
@@ -82,6 +84,7 @@ public class CarService implements ICarService {
     public ResponseEntity<?> findById(Integer id) {
         CarDTO foundCar = mapper.convertValue(carRepository.findById(id).get(), CarDTO.class);
         if (foundCar !=null){
+            //foundCar.setBookings(bookingRepository.findByCarId(id));
             return new ResponseEntity<CarDTO>(foundCar, HttpStatus.OK);
         }else{
             return new ResponseEntity("No se encontró el auto solicitado", HttpStatus.NOT_FOUND);
@@ -129,4 +132,17 @@ public class CarService implements ICarService {
         }
         return carsDTO;
     }
+
+    @Override
+    public List<CarDTO> filterCars(Specification spec) {
+        List<CarDTO> listCarsDTO = new ArrayList<>();
+        List<Car> listCars = carRepository.findAll(spec);
+        for (Car car : listCars) {
+            listCarsDTO.add(mapper.convertValue(car, CarDTO.class));
+        }
+        Collections.shuffle(listCarsDTO);
+        return listCarsDTO;
+    }
+
+   
 }
